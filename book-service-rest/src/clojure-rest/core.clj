@@ -32,7 +32,11 @@
              db   (mg/get-db conn "test")
              author (get-in params ["author"])
              title (get-in params ["title"])]
-         (mc/update db "books" {:_id (ObjectId. oid)} {:author author :title title}) "ok")))
+         (mc/update db "books" {:_id (ObjectId. oid)} {:author author :title title}) "ok"))
+     (DELETE "/" []
+       (let [conn (mg/connect)
+             db   (mg/get-db conn "test")]
+        (mc/remove db "books" {:_id (ObjectId. oid)}) "ok")))
    (route/not-found "Not Found"))
 
 (run-jetty
