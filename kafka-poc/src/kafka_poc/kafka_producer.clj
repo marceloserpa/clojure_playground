@@ -1,4 +1,5 @@
-(ns kafka-poc.kafka-producer)
+(ns kafka-poc.kafka-producer
+  (:require [cheshire.core :as json]))
 
 (use 'clj-kafka.producer)
 
@@ -8,12 +9,12 @@
 
 (def topic "test")
 
-(defn build-message [msg]
+(defn encode-message [json-message]
   (message topic
-    (.getBytes msg)))
+     (.getBytes (json/generate-string json-message))))
 
 (def produce
   (producer cfg-broker))
 
 (send-message
-  produce (build-message "New Message"))
+  produce (encode-message {:name "Marcelo" :role "Developer"}))
